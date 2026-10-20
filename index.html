@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Global Minefield</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23bfd6e6'/%3E%3Cpath d='M7 12c3-4 7-3 9-1s1 5-2 6-4 4-2 7c-4-1-7-6-5-12zM19 8c3 0 6 3 6 6-2 0-3-2-5-2s-3-2-1-4zM20 18c2 0 4 1 4 3s-2 4-4 4-2-5 0-7z' fill='%23f7f2e6' stroke='%237a97ad' stroke-width='1'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-mode="menu">
+    <header class="topbar">
+      <div class="tb-left">
+        <div class="brand">
+          <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+            <circle cx="16" cy="16" r="14" class="logo-sea" />
+            <path class="logo-land" d="M7 12c3-4 7-3 9-1s1 5-2 6-4 4-2 7c-4-1-7-6-5-12zM19 8c3 0 6 3 6 6-2 0-3-2-5-2s-3-2-1-4zM20 18c2 0 4 1 4 3s-2 4-4 4-2-5 0-7z" />
+          </svg>
+          <span class="brand-name">Global <b>Minefield</b></span>
+        </div>
+        <div class="hud-mode" id="hudMode"></div>
+      </div>
+
+      <div class="tb-center">
+        <div class="prompt" id="prompt" aria-live="polite">
+          <div class="prompt-text">
+            <span class="prompt-label">Click on</span>
+            <span class="prompt-name" id="promptName"></span>
+            <span class="prompt-aka" id="promptAka"></span>
+          </div>
+          <div class="prompt-actions">
+            <button class="btn" id="btnSkip" title="Skip for now (Space)">Skip <kbd>Space</kbd></button>
+            <button class="btn" id="btnShowMe" title="Show me where it is (H)">Show me <kbd>H</kbd></button>
+          </div>
+        </div>
+        <div class="study-bar">
+          <input id="studySearch" type="search" list="countryNames" placeholder="Find a country…" autocomplete="off" />
+          <datalist id="countryNames"></datalist>
+          <label class="toggle"><input type="checkbox" id="studyColors" /> <span>Color by my progress</span></label>
+        </div>
+      </div>
+
+      <div class="tb-right">
+        <div class="hud-stats">
+          <div class="stat"><span class="stat-v" id="hudScore">0/0</span><span class="stat-l" id="hudScoreLabel">found</span></div>
+          <div class="stat" id="hudAccWrap"><span class="stat-v" id="hudAcc">–</span><span class="stat-l" id="hudAccLabel">accuracy</span></div>
+          <div class="stat"><span class="stat-v" id="hudTime">0:00</span><span class="stat-l">time</span></div>
+          <div class="stat" id="hudBestWrap"><span class="stat-v" id="hudBest">–</span><span class="stat-l">best</span></div>
+        </div>
+        <div class="hud-actions">
+          <button class="btn ghost" id="btnGiveUp">Give up</button>
+          <button class="btn ghost" id="btnDone">Done</button>
+          <button class="btn ghost" id="btnMenu">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="stage">
+      <div id="map"></div>
+
+      <div class="banner" id="feedback" aria-live="polite"></div>
+
+      <aside class="log" id="logPanel" aria-label="Recent answers">
+        <button class="log-head" id="logToggle" aria-expanded="true">
+          <span>Recent <span id="logCount"></span></span><i class="chev" aria-hidden="true">▾</i>
+        </button>
+        <ol class="log-list" id="log" title="Click one to see it on the map"></ol>
+      </aside>
+
+      <div class="legend">
+        <span><i class="sw st-mastered"></i>Mastered</span>
+        <span><i class="sw st-learning"></i>Learning</span>
+        <span><i class="sw st-hot"></i>Hot list</span>
+      </div>
+      <div class="study-hint">Hover or tap anywhere to see what's there.</div>
+
+      <div class="tip" id="tip"></div>
+
+      <button class="results-pill" id="btnShowResults">Show results</button>
+
+      <div class="zoom-ctrls">
+        <button class="btn icon" id="zoomIn" title="Zoom in (+)" aria-label="Zoom in">+</button>
+        <button class="btn icon" id="zoomOut" title="Zoom out (−)" aria-label="Zoom out">−</button>
+        <button class="btn icon" id="zoomHome" title="Reset view (0)" aria-label="Reset view">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5M5.5 8v8.5h9V8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
+        </button>
+      </div>
+
+      <!-- Start menu -->
+      <section class="overlay" id="menu" aria-label="Start menu">
+        <div class="card menu-card">
+          <div class="menu-head">
+            <h1>Global Minefield</h1>
+            <p>Find every country on a world map with no borders.</p>
+          </div>
+
+          <div class="menu-section">
+            <div class="section-label">Countries</div>
+            <div class="chips" id="scopeChips"></div>
+            <div class="section-hint">Pick several continents to combine them. The bar under each one shows how many you've mastered.</div>
+          </div>
+
+          <div class="menu-section">
+            <div class="section-label">Mode</div>
+            <div class="modes" id="modes"></div>
+          </div>
+
+          <button class="btn primary big" id="btnStart">Start</button>
+
+          <div class="menu-foot">
+            <button class="btn ghost" id="btnStudy">Study map</button>
+            <button class="btn ghost" id="btnStats">Progress &amp; hot list</button>
+          </div>
+          <div class="tips">Scroll or pinch to zoom · drag to pan · <kbd>Space</kbd> skip · <kbd>0</kbd> reset view</div>
+          <div class="warn" id="storageWarn" hidden>This browser window can't save progress, so your stats and hot list won't be kept. Try a normal (non-private) window.</div>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section class="overlay" id="results" aria-label="Results" hidden>
+        <div class="card results-card" id="resultsCard"></div>
+      </section>
+
+      <!-- Progress / stats -->
+      <section class="overlay" id="stats" aria-label="Progress" hidden>
+        <div class="card stats-card">
+          <div class="stats-top">
+            <h2>Your progress</h2>
+            <button class="btn ghost icon" id="btnCloseStats" aria-label="Close">✕</button>
+          </div>
+          <div class="stats-body" id="statsBody"></div>
+          <div class="stats-foot">
+            <button class="btn ghost" id="btnExport">Export progress</button>
+            <button class="btn ghost" id="btnImport">Import progress</button>
+            <input type="file" id="importFile" accept="application/json,.json" hidden />
+            <span class="spacer"></span>
+            <button class="btn ghost danger" id="btnReset">Reset progress</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/vendor/d3.min.js"></script>
+    <script src="js/vendor/topojson-client.min.js"></script>
+    <script src="js/data/world.js"></script>
+    <script src="js/countries.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
