@@ -2,11 +2,9 @@
 
 Find every country on a world map with no borders. No ads, no account, and it works offline.
 
-**Play online: https://victor8-l.github.io/GlobalMinefield/**
-
 ## Play
 
-Play at the link above, or download the code and open **`index.html`** in any modern browser. No install or build step is needed:
+Download the code and open **`index.html`** in any modern browser. No install or build step is needed:
 
 ```bash
 git clone https://github.com/victor8-L/GlobalMinefield.git
@@ -60,7 +58,7 @@ Tiny countries have no markers, so the map stays truly "no outlines". Small isla
 
 ## Saving progress
 
-Progress is saved in the browser you play in. Each browser keeps its own record, and so do the online version and a downloaded copy. Clearing site data or using a private window loses it. Use **Export progress** in **Progress & hot list** to save a backup file, and **Import progress** to restore it or move it somewhere else.
+Progress is saved in the browser you play in, and each browser keeps its own record. Clearing site data or using a private window loses it. Use **Export progress** in **Progress & hot list** to save a backup file, and **Import progress** to restore it or move it somewhere else.
 
 ## Country list
 
