@@ -13,6 +13,7 @@
   --ocean: #c2d7e7;
   --land: #f8f4ea;
   --coast: #8babc1;
+  --river: #5b97c6;
 
   --found: #5cb785;
   --found-edge: #2d8657;
@@ -54,6 +55,7 @@
     --ocean: #0f2132;
     --land: #344557;
     --coast: #56708a;
+    --river: #4f86b3;
 
     --found: #3a9d66;
     --found-edge: #7fd6a2;
@@ -433,40 +435,74 @@ body[data-mode='study'] .study-bar {
   stroke-width: 2.1;
 }
 
-/* revealed countries */
-.rv .shape,
-.hover-shape .shape {
+/* water map: Antarctica, lakes and rivers only show on the water map */
+.antarctica,
+.lakes,
+.rivers {
+  display: none;
+}
+#map.water .antarctica,
+#map.water .lakes,
+#map.water .rivers {
+  display: inline;
+}
+.lake {
+  fill: var(--ocean);
+  stroke: var(--coast);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.river {
+  fill: none;
+  stroke: var(--river);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* revealed and hovered shapes; each state sets a color (--c) and an edge (--e) */
+.rv .shape {
+  fill: var(--c);
+  stroke: var(--e);
   stroke-width: 0.8;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
 }
-.rv .dot,
-.hover-shape .dot {
+.rv .shape.line {
   fill: none;
+  stroke: var(--c);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.rv .dot {
+  fill: none;
+  stroke: var(--c);
   stroke-width: 9;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
-.rv.found .shape { fill: var(--found); stroke: var(--found-edge); }
-.rv.found .dot { stroke: var(--found); }
-.rv.missed .shape { fill: var(--missed); stroke: var(--missed-edge); }
-.rv.missed .dot { stroke: var(--missed); }
-.rv.gaveup .shape { fill: var(--gaveup); stroke: var(--gaveup-edge); }
-.rv.gaveup .dot { stroke: var(--gaveup); }
-.rv.relearned .shape { fill: var(--relearned); stroke: var(--relearned-edge); }
-.rv.relearned .dot { stroke: var(--relearned); }
-.rv.boom .shape { fill: var(--boom); stroke: var(--boom-edge); }
-.rv.boom .dot { stroke: var(--boom); }
-.rv.st-mastered .shape { fill: var(--st-mastered); stroke: var(--found-edge); }
-.rv.st-mastered .dot { stroke: var(--st-mastered); }
-.rv.st-learning .shape { fill: var(--st-learning); stroke: var(--relearned-edge); }
-.rv.st-learning .dot { stroke: var(--st-learning); }
-.rv.st-hot .shape { fill: var(--st-hot); stroke: var(--missed-edge); }
-.rv.st-hot .dot { stroke: var(--st-hot); }
-.hover-shape .shape { fill: var(--hover); stroke: var(--hover-edge); fill-opacity: 0.85; }
-.hover-shape .dot { stroke: var(--hover); }
-.hover-shape.search .shape { fill: var(--gaveup); stroke: var(--gaveup-edge); }
-.hover-shape.search .dot { stroke: var(--gaveup); }
+.rv.found { --c: var(--found); --e: var(--found-edge); }
+.rv.missed { --c: var(--missed); --e: var(--missed-edge); }
+.rv.gaveup { --c: var(--gaveup); --e: var(--gaveup-edge); }
+.rv.relearned { --c: var(--relearned); --e: var(--relearned-edge); }
+.rv.boom { --c: var(--boom); --e: var(--boom-edge); }
+.rv.st-mastered { --c: var(--st-mastered); --e: var(--found-edge); }
+.rv.st-learning { --c: var(--st-learning); --e: var(--relearned-edge); }
+.rv.st-hot { --c: var(--st-hot); --e: var(--missed-edge); }
+.rv.hover { --c: var(--hover); --e: var(--hover-edge); }
+.rv.search { --c: var(--gaveup); --e: var(--gaveup-edge); }
+.rv.hover .shape {
+  fill-opacity: 0.85;
+}
+/* seas are tinted rather than painted over, so the map stays readable; no outline, since the
+   land covers their coasts and the seams between a sea's pieces shouldn't show */
+.reveals-under .rv .shape,
+.hover-under .rv .shape {
+  fill-opacity: 0.6;
+  stroke: none;
+}
 .rv.flash .shape {
   animation: flash 0.5s ease-in-out 3;
 }
@@ -1388,4 +1424,42 @@ th.num {
   .hide-sm {
     display: none;
   }
+}
+
+/* ------------------------------------------------------------------ segmented switch */
+.seg {
+  display: inline-flex;
+  margin-top: 16px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--panel-2);
+}
+.seg button {
+  height: 34px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink-2);
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.seg button.on {
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(25, 35, 45, 0.14);
+}
+.seg button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.seg.small {
+  margin: 0 auto 0 16px;
+}
+.seg.small button {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 13px;
 }

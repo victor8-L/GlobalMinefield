@@ -64,4 +64,4 @@ THIS SOFTWARE.
 
 ## Natural Earth
 
-The country shapes in world-atlas come from Natural Earth (https://www.naturalearthdata.com/), which is in the public domain.
+The country shapes in world-atlas come from Natural Earth (https://www.naturalearthdata.com/), which is in the public domain. So do the seas, lakes and rivers in `js/data/water.js` (Natural Earth v5.1.2 marine areas, lakes, and rivers and lake centerlines).

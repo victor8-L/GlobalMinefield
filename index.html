@@ -90,13 +90,23 @@
         <div class="card menu-card">
           <div class="menu-head">
             <h1>Global Minefield</h1>
-            <p>Find every country on a world map with no borders.</p>
+            <p id="menuTagline"></p>
+          </div>
+
+          <div class="seg" id="gameSwitch" role="tablist" aria-label="What to find">
+            <button role="tab" data-game="countries">Countries</button>
+            <button role="tab" data-game="water">Water</button>
           </div>
 
           <div class="menu-section">
-            <div class="section-label">Countries</div>
+            <div class="section-label">Where</div>
             <div class="chips" id="scopeChips"></div>
             <div class="section-hint">Pick several continents to combine them. The bar under each one shows how many you've mastered.</div>
+          </div>
+
+          <div class="menu-section" id="kindsSection">
+            <div class="section-label">Kinds</div>
+            <div class="chips" id="kindChips"></div>
           </div>
 
           <div class="menu-section">
@@ -125,6 +135,10 @@
         <div class="card stats-card">
           <div class="stats-top">
             <h2>Your progress</h2>
+            <div class="seg small" id="statsSwitch" role="tablist" aria-label="Show progress for">
+              <button role="tab" data-game="countries">Countries</button>
+              <button role="tab" data-game="water">Water</button>
+            </div>
             <button class="btn ghost icon" id="btnCloseStats" aria-label="Close">✕</button>
           </div>
           <div class="stats-body" id="statsBody"></div>
@@ -143,6 +157,8 @@
     <script src="js/vendor/topojson-client.min.js"></script>
     <script src="js/data/world.js"></script>
     <script src="js/countries.js"></script>
+    <script src="js/water.js"></script>
+    <script src="js/data/water.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/map.js"></script>
     <script src="js/game.js"></script>

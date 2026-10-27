@@ -92,8 +92,9 @@
       return recentMisses * 3 + r.miss - r.streak * 2 + (data.pins[code] ? 1 : 0);
     },
 
-    hotList() {
-      return GM.COUNTRIES.filter((c) => this.isHot(c.code)).sort(
+    // `items` is GM.COUNTRIES or GM.WATER: each game has its own hot list.
+    hotList(items = GM.COUNTRIES) {
+      return items.filter((c) => this.isHot(c.code)).sort(
         (a, b) => this.heat(b.code) - this.heat(a.code) || a.name.localeCompare(b.name)
       );
     },

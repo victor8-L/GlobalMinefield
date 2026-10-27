@@ -21,9 +21,10 @@
   }
 
   class Session {
-    constructor({ rules, codes, scope }) {
+    constructor({ rules, codes, scope, game }) {
       this.rules = rules;
-      this.scope = scope; // { key, label, ... } from the menu
+      this.scope = scope; // what was picked in the menu (see app.js)
+      this.game = game; // 'countries' | 'water'
       this.total = codes.length;
       this.queue = shuffle(codes.slice());
       this.found = new Set(); // found on the first try
